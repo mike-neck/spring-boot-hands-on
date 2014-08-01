@@ -21,6 +21,10 @@ jar {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+configurations {
+    groovyConsole
+}
+
 repositories {
     mavenCentral()
     maven { url "http://repo.spring.io/snapshot" }
@@ -29,5 +33,15 @@ repositories {
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile files("${System.getenv('JAVA_HOME')}/db/lib/derby.jar")
+    groovyConsole 'org.codehaus.groovy:groovy-all:2.3.6'
+    groovyConsole 'org.codehaus.groovy.modules.http-builder:http-builder:0.7.1'
     testCompile("org.springframework.boot:spring-boot-starter-test")
+}
+
+idea {
+    module {
+        scopes.PROVIDED.plus += configurations.groovyConsole
+    }
 }
