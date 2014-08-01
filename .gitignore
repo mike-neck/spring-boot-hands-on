@@ -4,3 +4,4 @@ spring-boot-self-learning.ipr
 .gradle/
 build/
 out/
+derby.log

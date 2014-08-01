@@ -47,4 +47,10 @@ public class BookmarkRestController {
     public void delete(@PathVariable("id") Long id) {
         service.delete(id);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Bookmark findById(@PathVariable("id") Long id) {
+        return service.findById(id);
+    }
 }

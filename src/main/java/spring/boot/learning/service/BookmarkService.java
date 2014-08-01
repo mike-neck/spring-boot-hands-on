@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.boot.learning.domain.Bookmark;
 import spring.boot.learning.repository.BookmarkRepository;
 
+import java.awt.print.Book;
 import java.util.List;
 
 
@@ -31,6 +32,10 @@ public class BookmarkService {
 
     @Autowired
     BookmarkRepository repository;
+
+    public Bookmark findById (Long id) {
+        return repository.findOne(id);
+    }
 
     public List<Bookmark> findAll () {
         return repository.findAll(new Sort(Sort.Direction.ASC, "id"));
