@@ -5,3 +5,4 @@ spring-boot-self-learning.ipr
 build/
 out/
 derby.log
+database.db
