@@ -54,4 +54,38 @@ public class AppConfig {
     public DataSource dataSource() {
         return new Log4jdbcProxyDataSource(datasource);
     }
+
+    @Bean
+    Filter corsFilter() {
+        return new Filter() {
+            public void doFilter(ServletRequest req, ServletResponse res,
+                                 FilterChain chain) throws IOException, ServletException {
+                HttpServletRequest request = (HttpServletRequest) req;
+                HttpServletResponse response = (HttpServletResponse) res;
+                String method = request.getMethod();
+                response.setHeader("Access-Control-Allow-Origin", "*");
+                response.setHeader("Access-Control-Allow-Methods",
+                        "POST,GET,OPTIONS,DELETE");
+                response.setHeader("Access-Control-Max-Age",
+                        Long.toString(60 * 60));
+                response.setHeader("Access-Control-Allow-Credentials", "true");
+                response.setHeader(
+                        "Access-Control-Allow-Headers",
+                        "Origin,Accept,X-Requested-With,"
+                                + "Content-Type,Access-Control-Request-Method,"
+                                + "Access-Control-Request-Headers,Authorization");
+                if ("OPTIONS".equals(method)) {
+                    response.setStatus(HttpStatus.OK.value());
+                } else {
+                    chain.doFilter(req, res);
+                }
+            }
+
+            public void init(FilterConfig filterConfig) {
+            }
+
+            public void destroy() {
+            }
+        };
+    }
 }
