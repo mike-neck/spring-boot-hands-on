@@ -1,7 +1,7 @@
 spring:
   datasource:
     driverClassName: org.apache.derby.jdbc.EmbeddedDriver
-    url: jdbc:derby:/Users/mike/IdeaProjects/spring-boot/self/learning/database.db;create=true
+    url: jdbc:derby:/Users/mike/IdeaProjects/spring-boot-self-learning/database.db;create=true
     username: sa
     password: sa
   jpa:
