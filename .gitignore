@@ -6,3 +6,4 @@ build/
 out/
 derby.log
 database.db
+jsug-shop/.gitignore
