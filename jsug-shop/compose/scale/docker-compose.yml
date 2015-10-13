@@ -8,7 +8,7 @@ redis:
   image: redis
 h2:
   image: mikeneck/h2
-shop1:
+shop:
   image: mikeneck/jsug-shop
   links:
     - redis
@@ -21,29 +21,3 @@ shop1:
     --logging.level.jdbc.sqltiming=ERROR
     --logging.level.org=WARN
     --info.instance.name=shop1
-shop2:
-  image: mikeneck/jsug-shop
-  links:
-    - redis
-    - h2
-  environment:
-    VIRTUAL_HOST: jsug-shop.com
-  command:
-    --spring.thymeleaf.cache=true
-    --logging.level.jdbc.resultsettable=ERROR
-    --logging.level.jdbc.sqltiming=ERROR
-    --logging.level.org=WARN
-    --info.instance.name=shop2
-shop3:
-  image: mikeneck/jsug-shop
-  links:
-    - redis
-    - h2
-  environment:
-    VIRTUAL_HOST: jsug-shop.com
-  command:
-    --spring.thymeleaf.cache=true
-    --logging.level.jdbc.resultsettable=ERROR
-    --logging.level.jdbc.sqltiming=ERROR
-    --logging.level.org=WARN
-    --info.instance.name=shop3

@@ -1,0 +1,11 @@
+# 起動
+
+docker-compose up -d
+
+# 起動ログ確認
+
+docker-compose logs
+
+# スケール
+
+docker-compose scale shop=4 #shopを3つ追加で起動
