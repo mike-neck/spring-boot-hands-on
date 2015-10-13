@@ -4,6 +4,7 @@ import jsug.domain.model.Cart;
 import jsug.infra.cart.CachingCart;
 import net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.cache.CacheManager;
@@ -14,6 +15,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.sql.DataSource;
@@ -24,6 +29,7 @@ import static java.util.stream.Collectors.toList;
 
 @Configuration
 @EnableCaching
+@EnableRedisHttpSession
 public class AppConfig {
     @Autowired
     DataSourceProperties dataSourceProperties;
@@ -46,12 +52,8 @@ public class AppConfig {
     }
 
     @Bean
-    CacheManager cacheManager() {
-        SimpleCacheManager cacheManager = new SimpleCacheManager();
-        List<ConcurrentMapCache> caches = Stream.of("category", "goods", "sql", "orderLines")
-                .map(ConcurrentMapCache::new)
-                .collect(toList());
-        cacheManager.setCaches(caches);
-        return cacheManager;
+    CacheManager cacheManager(@Qualifier("redisTemplate")
+                              RedisOperations<Object, Object> redisOperations) {
+        return new RedisCacheManager(((RedisTemplate) redisOperations));
     }
 }
