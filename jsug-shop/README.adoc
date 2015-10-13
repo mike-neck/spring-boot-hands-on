@@ -1,0 +1,5 @@
+= JSUG-SHOP
+
+これはJSUGで行われたSpring Bootハンズオンのトレーニング
+
+http://jsug-spring-boot-handson.readthedocs.org/en/latest/index.html[JSUGのSpring Bootハンズオンのページ]
