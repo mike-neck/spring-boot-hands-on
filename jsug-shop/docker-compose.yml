@@ -1,0 +1,16 @@
+redis:
+  image: redis
+h2:
+  image: mikeneck/h2
+shop:
+  image: mikeneck/jsug-shop
+  ports:
+    - "8080:8080"
+  links:
+    - redis
+    - h2
+  command: >
+    --spring.thymeleaf.cache=true
+    --logging.level.jdbc.resultsettable=ERROR
+    --logging.level.jdbc.sqltiming=ERROR
+    --logging.level.org=WARN
