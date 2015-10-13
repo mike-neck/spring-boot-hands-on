@@ -1,6 +1,7 @@
 package jsug;
 
 import jsug.domain.model.Cart;
+import jsug.infra.cart.CachingCart;
 import net.sf.log4jdbc.sql.jdbcapi.DataSourceSpy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -41,13 +42,13 @@ public class AppConfig {
     @Bean
     @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
     Cart cart() {
-        return new Cart();
+        return new CachingCart();
     }
 
     @Bean
     CacheManager cacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
-        List<ConcurrentMapCache> caches = Stream.of("category", "goods", "sql")
+        List<ConcurrentMapCache> caches = Stream.of("category", "goods", "sql", "orderLines")
                 .map(ConcurrentMapCache::new)
                 .collect(toList());
         cacheManager.setCaches(caches);
