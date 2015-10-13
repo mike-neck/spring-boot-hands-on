@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>エラー</title>
+    <link href="../static/css/wro.css" rel="stylesheet" type="text/css" th:href="@{/css/wro.css}"/>
+</head>
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" th:href="@{/}"><span></span></a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="goods/showGoods.html" th:href="@{/}">ホーム</a>
+                </li>
+                <li>
+                    <a href="cart/viewCart.html" th:href="@{/}">カート</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br/>
+
+<div class="container">
+    <div class="alert alert-danger">
+        <span>エラーが発生しました。</span>
+        <a href="goods/showGoods.html" th:href="@{/}">ホーム</a>
+        <span>に戻ってやりなおしてください。</span>
+    </div>
+</div>
+
+</body>
+</html>
