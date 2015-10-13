@@ -1,0 +1,43 @@
+apply plugin: 'base'
+
+ext {
+    dockerImage = project.hasProperty('imageName') ? project.properties['imageName'] : 'h2database'
+    h2Docker = "${buildDir}/h2"
+}
+
+repositories {
+    jcenter()
+}
+
+configurations {
+    h2database
+}
+
+dependencies {
+    h2database 'com.h2database:h2:1.4.186'
+}
+
+task dockerfile(type: Copy) {
+    from "docker/h2/Dockerfile"
+    destinationDir file(h2Docker)
+}
+
+task h2Copy(type: Copy) {
+    from configurations.h2database
+    destinationDir file(h2Docker)
+    rename 'h2(.*).jar', 'h2.jar'
+}
+
+tasks.assemble.dependsOn dockerfile, h2Copy
+
+task dockerBuild (group: 'docker', dependsOn: 'assemble', type: Exec) {
+    commandLine 'docker', 'build', '-t', dockerImage, h2Docker
+}
+
+tasks.build.dependsOn dockerBuild
+
+task propertyCheck {
+    doLast {
+        println dockerImage
+    }
+}
