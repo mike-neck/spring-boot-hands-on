@@ -1,0 +1,56 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.6.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
+        classpath('io.spring.gradle:dependency-management-plugin:0.5.2.RELEASE')
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot' 
+apply plugin: 'io.spring.dependency-management' 
+
+ext {
+    jdk = '1.8'
+    encoding = 'UTF-8'
+}
+
+jar {
+    baseName = 'url-shortner'
+    version = '0.0.1-SNAPSHOT'
+}
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = jdk
+    targetCompatibility = jdk
+    options.encoding = encoding
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-redis')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile 'com.google.guava:guava:18.0'
+    compile 'commons-validator:commons-validator:1.4.1'
+    testCompile 'com.jayway.restassured:rest-assured:2.6.0'
+    testCompile('org.springframework.boot:spring-boot-starter-test') 
+}
+
+
+idea {
+    project {
+        languageLevel = jdk
+        vcs = 'Git'
+    }
+}
+

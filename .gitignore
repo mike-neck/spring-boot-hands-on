@@ -1,6 +1,6 @@
-spring-boot-self-learning.iml
-spring-boot-self-learning.iws
-spring-boot-self-learning.ipr
+*.iml
+*.iws
+*.ipr
 .gradle/
 build/
 out/
