@@ -36,6 +36,9 @@ repositories {
     mavenCentral()
 }
 
+test {
+    exclude '**/*Test$*'
+}
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-redis')
