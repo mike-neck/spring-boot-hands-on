@@ -17,7 +17,9 @@ package com.example.api;
 
 import com.google.common.hash.Hashing;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,7 +29,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 public class UrlShortener {
@@ -35,7 +36,8 @@ public class UrlShortener {
     @Value("${urlshorten.url:http://localhost:${server.port:8080}}")
     String urlShortenerUrl;
 
-    final ConcurrentHashMap<String, String> urlMap = new ConcurrentHashMap<>();
+    @Autowired
+    StringRedisTemplate redis;
 
     final UrlValidator validator =
             new UrlValidator(new String[]{"http", "https"});
@@ -44,6 +46,7 @@ public class UrlShortener {
     ResponseEntity<String> save(@RequestParam String url) {
         if (validator.isValid(url)) {
             String hash = getHash(url);
+            redis.opsForValue().set(hash, url);
             String shorten = new StringBuilder(urlShortenerUrl)
                     .append('/')
                     .append(hash)
@@ -58,14 +61,12 @@ public class UrlShortener {
         int hashCode = Hashing.murmur3_32()
                 .hashString(url, StandardCharsets.UTF_8)
                 .asInt();
-        String hash = Integer.toHexString(hashCode);
-        urlMap.putIfAbsent(hash, url);
-        return hash;
+        return Integer.toHexString(hashCode);
     }
 
     @RequestMapping(value = "{hash}", method = RequestMethod.GET)
     ResponseEntity<?> get(@PathVariable String hash) {
-        String url = urlMap.get(hash);
+        String url = redis.opsForValue().get(hash);
         if (url != null) {
             return new ResponseEntity<>(url, HttpStatus.OK);
         } else {
