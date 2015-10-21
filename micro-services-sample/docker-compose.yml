@@ -1,0 +1,11 @@
+redis:
+    image: redis
+    ports:
+        - "6379:6379"
+gitbucket:
+    image: mikeneck/gitbucket
+    ports:
+        - "8383:8080"
+        - "29418:29418"
+    volumes:
+        - ./gitbucket:/home/gitbucket/.gitbucket
