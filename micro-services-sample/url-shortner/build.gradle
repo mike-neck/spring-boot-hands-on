@@ -19,6 +19,8 @@ apply plugin: 'io.spring.dependency-management'
 ext {
     jdk = '1.8'
     encoding = 'UTF-8'
+    springBootVersion = '1.2.7.RELEASE'
+    springCloudVersion = '1.0.3.RELEASE'
 }
 
 jar {
@@ -41,14 +43,19 @@ test {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-redis')
-    compile('org.springframework.boot:spring-boot-starter-web')
+    compile "org.springframework.boot:spring-boot-starter-redis:${springBootVersion}"
+    compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    compile "org.springframework.cloud:spring-cloud-starter-config:${springCloudVersion}"
+    compile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
     compile 'com.google.guava:guava:18.0'
     compile 'commons-validator:commons-validator:1.4.1'
     testCompile 'com.jayway.restassured:rest-assured:2.6.0'
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
+bootRun {
+    jvmArgs '-Dserver.port=8081'
+}
 
 idea {
     project {
